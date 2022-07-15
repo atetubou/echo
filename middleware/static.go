@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -251,6 +252,10 @@ func listDir(t *template.Template, name string, dir http.File, res *echo.Respons
 	if err != nil {
 		return
 	}
+
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].Name() < files[j].Name()
+	})
 
 	// Create directory index
 	res.Header().Set(echo.HeaderContentType, echo.MIMETextHTMLCharsetUTF8)
